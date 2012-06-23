@@ -17,6 +17,19 @@
         // Additional initialization code here
       };
 
+      window.getFriends = function() {
+        FB.api('/me/friends', { limit: 10 }, function(response) {
+          for (var i=0, l=response.length; i<l; i++) {
+            var post = response[i];
+            if (post.name) {
+              alert('Message: ' + post.name);
+            } else if (post.attachment && post.attachment.name) {
+              alert('Attachment: ' + post.attachment.name);
+            }
+          }
+        });
+      };
+
       // Load the SDK Asynchronously
       (function(d){
          var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
@@ -27,18 +40,18 @@
        }(document));
 
        onLogin = function() {
-       FB.login(function(response) {
-         if (response.authResponse) {
-           console.log('Welcome!  Fetching your information.... ');
-           FB.api('/me', function(response) {
-             console.log('Good to see you, ' + response.name + '.');
-           });
-         } else {
-           console.log('User cancelled login or did not fully authorize.');
-         }
-       });
+         FB.login(function(response) {
+           if (response.authResponse) {
+             console.log('Welcome!  Fetching your information.... ');
+             FB.api('/me', function(response) {
+               console.log('Good to see you, ' + response.name + '.');
+             });
+           } else {
+             console.log('User cancelled login or did not fully authorize.');
+           }
+         });
+       };
 
-       }
     </script>
 
     <form action="/sign" method="post">
