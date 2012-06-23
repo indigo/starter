@@ -1,10 +1,5 @@
-<html>
-  <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-  <body>
-    <div id="fb-root"></div>
-    <script>
+      
+
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '463528243676331', // App ID
@@ -57,11 +52,3 @@
           // user is now logged out
         });
        };
-
-    </script>
-
-    <div><input type="button" value="Login FB" onClick="onLogin();"></div>
-    <div><input type="button" value="Logout FB" onClick="onLogout();"></div>
-
-  </body>
-</html>
