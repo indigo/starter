@@ -1,29 +1,23 @@
-      
+window.fbAsyncInit = () ->
+  FB.init () ->
+    {
+      appId      : '463528243676331',                             // App ID
+      channelUrl : 'http://zoe-nicole.appspot.com//channel.html', // Channel File
+      status     : true,                                          // check login status
+      cookie     : true,                                          // enable cookies to allow the server to access the session
+      xfbml      : true                                           // parse XFBML
+    }
 
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '463528243676331', // App ID
-          channelUrl : 'http://zoe-nicole.appspot.com//channel.html', // Channel File
-          status     : true, // check login status
-          cookie     : true, // enable cookies to allow the server to access the session
-          xfbml      : true  // parse XFBML
-        });
+window.getFriends = () ->
+  FB.api
+    '/me/friends',
+    (response) ->
+      for i in [0..reponse.length]
+        if post.name
+          alert 'Message: ' + post.name
+        else if post.attachment and post.attachment.name
+          alert 'Attachment: ' + post.attachment.name
 
-        // Additional initialization code here
-      };
-
-      window.getFriends = function() {
-        FB.api('/me/friends', { limit: 10 }, function(response) {
-          for (var i=0, l=response.length; i<l; i++) {
-            var post = response[i];
-            if (post.name) {
-              alert('Message: ' + post.name);
-            } else if (post.attachment && post.attachment.name) {
-              alert('Attachment: ' + post.attachment.name);
-            }
-          }
-        });
-      };
 
       // Load the SDK Asynchronously
       (function(d){
