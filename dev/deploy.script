@@ -1,0 +1,8 @@
+*** Running appfg.py with the following flags:
+    --no_cookies --email=richard.rispoli@gmail.com --passin update
+/Applications/GoogleAppEngineLauncher.app/Contents/Resources/GoogleAppEngine-default.bundle/Contents/Resources/google_appengine/google/appengine/api/search/search.py:232: UserWarning: DocumentOperationResult._code is deprecated. Use OperationResult._code instead.
+  'Use OperationResult.%s instead.' % (name, name))
+/Applications/GoogleAppEngineLauncher.app/Contents/Resources/GoogleAppEngine-default.bundle/Contents/Resources/google_appengine/google/appengine/api/search/search.py:232: UserWarning: DocumentOperationResult._CODES is deprecated. Use OperationResult._CODES instead.
+  'Use OperationResult.%s instead.' % (name, name))
+Application: zoe-nicole; version: 1
+Host: appengine.google.com
