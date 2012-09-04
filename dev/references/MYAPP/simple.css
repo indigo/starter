@@ -1,0 +1,13 @@
+div {
+    display: inline;
+}
+div.li {}
+.SimpleRessourceView {
+    display: inline;
+}
+div.impossible {
+	color: #bbbbbb;
+}
+div.running {
+	color: #ff0000;
+}

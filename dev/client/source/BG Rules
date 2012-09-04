@@ -1,0 +1,71 @@
+BG Rules
+
+The board of bg has 24 triangles.
+Each player has 15 checkers.
+Players go in opposite direction, Alice goes from 1 to 24, Bob from 24 to 1.
+The position 0 (For Alice) and 25 (For Bob) exists when a piece has been captured.
+Captured checkers are put on the the bar : the central bar of the board.
+
+The initial setup is symetrical :
+For Alice
+Position 1: 2 pieces
+Position 12: 5 pieces
+Position 17: 5 pieces
+Position 19: 3 pieces
+
+For Bob
+Position 24: 2 pieces
+etc...
+
+The objective is to bring all checkers to the last 6 positions, and only then to extract them outside of the board.
+
+To know who is going to start, each player roll one dice
+
+The player with the highest number starts with the other player's dice.
+Eg Alice rolls 6, Bob rolls 1, Alice plays first with 6 and 1
+If both players rolls the same number, re roll, optionnal rules put the Videau in x2 mode.
+
+After the first roll, each player play in turn throwing 2 dices.
+
+The doubling cube (videau) is a special dice displaying power of 2 values : 1, 2, 4, 8 ...
+At the beginning of the game, the doubling cube is at 1 and playable by both players, only during their turn and before throwing the dices.
+Playing the videau means doubling the multiplier of points that game represents.
+You play the videau by giving it to the other player.
+Only the player that owns the videau can play it.
+
+When Bod receives the videau from Alice, he can accept it, the game has now a multiplier doubled.
+Alice can throw her dices and play her turn.
+he can refuse it, he forfeit a 1 point game multiplied by the videau's value before receiving it. 
+
+The value of the videau starts at 1 and is a multiplier of the number of points the game represent.
+if the videau is at 1, the game is a x1 game.
+if the videau is at 4, the game is a x4 game.
+
+Each player has to use each dice independently, and the rule forces to uses the maximum dices when possible.
+Rolling any double is equivalent of having 2x as much dice.
+Eg rolling a double 5, is equivalent of having 5 5 5 5, with 4 independent dices.
+
+Note that It is not possible to add the value of 2 dices, you need to play each dice independently.
+
+You move a piece by the number of spaces in the dice.
+Eg: Alice has roll a 3 and has a piece in position 2, she can move the piece by 3 positions => destination 5.
+A destination is possible if it contains anything but more than 1 opponent.
+If it contains exactly 1 opponent, this opponent piece is captured and goes back to 0 for Alice, and 25 for Bob.
+
+You can put any number of your pieces on the same destination.
+
+You are forced to enter your captured checkers with your dice before moving any other checker.
+
+Once all your checkers are in the last 6 positions, you can start extracting them out of the board.
+
+Bob has to extract his checkers by reaching the position 0. Unless he has no other option, each dice is used to extract each checker by reaching the position 0 and not less (position -1)
+
+This means that if Bob has a checker in position 6 and one in position 5, a dice with a 6 has to be used on the checker 6 to reach the position 0 (outside).
+Bob can't use it on the checker in position 5, unless there is no checker in position 6.
+
+The first to extract all his checker wins.
+1 point if the opponent has extracted at least 1 checker
+2 points if the opponent hasn't extracted any checker.
+3 points if the opponent hasn't extracted any checker and still has a checker in its 6 first position.
+
+The multiplier of the videau is applied to know how many points the player wins.

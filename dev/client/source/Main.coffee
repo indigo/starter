@@ -14,6 +14,7 @@ jQuery ->
 			alert r for r in response
 
 	do
+		#start by hooking the facebook api in async
 		->
 			$('#facebook-jssdk').attr
 				'src':'http://connect.facebook.net/en_US/all.js'

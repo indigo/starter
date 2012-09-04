@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="simple.css" media="screen" />
+    <title>MYAPP</title>
+    <script src="vendor/jquery-1.7.1.js"></script>
+    <script src="vendor/underscore.js"></script>
+    <script src="vendor/backbone.js"></script>
+    <script src="vendor/backbone-localstorage.js"></script>
+    
+    <script type="text/template" id="simple-ressource-template">
+      <div class="rsc"><%= title %> : <%= value %></div>
+    </script>
+    <script type="text/template" id="Action-Template">
+      <div class="bar"><%= title %>, <%= duration %></div>
+    </script>
+    <script type="text/template" id="ActionView-template">
+     <div class="clickable"><%= title %>, <%= duration %> seconds</div>
+    </script>
+    <script type="text/template" id="ActionView-template-impossible">
+      <div class="impossible">  <%= title %>, <%= duration %> seconds</div>
+
+    </script>
+    <script type="text/template" id="ActionView-template-running">
+     <div class="running"><%= title %>, <%= timeleft %> seconds</div>
+
+    </script>
+
+    </head>
+
+    
+    <body>
+        <div id="content"></div>
+        <div id="panel"></div>
+
+    </body>
+
+    <script src="coffee/lib/Inventory.js" type="text/javascript" charset="utf-8"></script>
+    <script src="coffee/lib/LD.js" type="text/javascript" charset="utf-8"></script>
+    <script src="coffee/lib/views.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="coffee/lib/Main.js" type="text/javascript" charset="utf-8"></script>
+
+</html>
