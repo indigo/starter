@@ -21,7 +21,7 @@
       {% for game in myturn_games %}
       <tr>
         <td>{{ game.key().id() }}</td>
-        <td>{{ game.user_keys|count }}</td>
+        <td>{{ game.users|count }}</td>
         <td><button onClick="location.href='game?user_key={{ user.key() }}&amp;game_key={{ game.key() }}';">Play</button></td>
       </tr>
       {% endfor %}
@@ -36,7 +36,7 @@
       {% for game in waiting_games %}
       <tr>
         <td>{{ game.key().id() }}</td>
-        <td>{{ game.user_keys|count }}</td>
+        <td>{{ game.users|count }}</td>
         <td><button onClick="location.href='game?user_key={{ user.key() }}&amp;game_key={{ game.key() }}';">View</button></td>
       </tr>
       {% endfor %}

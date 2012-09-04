@@ -20,7 +20,7 @@
       {% for move in game_moves %}
       <tr>
         <td>{{ move.key().id() }}</td>
-        <td>{{ move.user_key.key().id() }}</td>
+        <td>{{ move.user.key().id() }}</td>
         <td>{{ move.data }}</td>
       </tr>
       {% endfor %}
@@ -28,7 +28,7 @@
 
     <p>
       <button onClick="location.href='user?user_key={{ user.key() }}';">HOME</button>
-    {% if not game.open and game.user_keys[0] == user.key() %}
+    {% if not game.open and game.users[0] == user.key() %}
       <button onClick="location.href='play?user_key={{ user.key() }}&amp;game_key={{ game.key() }}&amp;game_data={{ [1,3,5,6,12,15] }}';">PLAY</button>
     {% else %}
       <button onClick="location.href='game?user_key={{ user.key() }}';">NEXT GAME</button>
