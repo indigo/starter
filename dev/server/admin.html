@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>Challenger</title>
+    <link type="text/css" rel="stylesheet" href="stylesheets/main.css" />
+    <script id="facebook-jssdk"></script>
+    <script src="vendor/jquery-1.7.1.js"></script>
+    <script src="vendor/underscore.js"></script>
+    <script src="vendor/backbone.js"></script>
+    <script src="vendor/backbone-localstorage.js"></script>
+  </head>
+
+  <body>
+
+  {% if user %}
+    <p><b>User ID: {{ user.key().id() }}</b></p>
+
+    <table border="1">
+      <tr><th>Game ID</th><th>Nb of Players</th><th>View Game</th></tr>
+      {% for g in user_games %}
+      <tr>
+        <td>{{ g.key().id() }}</td>
+        <td>{{ g.user_keys|count }}</td>
+        <td><button onClick="location.href='admin?game_key={{ g.key() }}';">View</button></td>
+      </tr>
+      {% endfor %}
+    </table><br><br>
+  {% endif %}
+
+  {% if game %}
+    <p><b>Game ID: {{ game.key().id() }}</b></p>
+
+    <table border="1">
+      <tr><th>Move ID</th><th>User ID</th><th>Data</th></tr>
+      {% for m in game_moves %}
+      <tr>
+        <td>{{ m.key().id() }}</td>
+        <td>{{ m.user_key.key().id() }}</td>
+        <td>{{ m.data }}</td>
+      </tr>
+      {% endfor %}
+    </table><br><br>
+  {% endif %}
+
+    <p><b>All Users</b></p>
+
+    <table border="1">
+      <tr><th>User ID</th><th>Nb of Games</th><th>View Info</th></tr>
+      {% for u in all_users %}
+      <tr>
+        <td>{{ u.key().id() }}</td>
+        <td>{{ u.game_keys|count }}</td>
+        <td><button onClick="location.href='admin?user_key={{ u.key() }}';">View</button></td>
+      </tr>
+      {% endfor %}
+    </table><br><br>
+
+    <p><button onClick="location.href='admin?new_user=1';">Create New User</button></p>
+
+  </body>
+</html>
