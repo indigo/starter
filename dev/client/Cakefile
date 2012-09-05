@@ -1,5 +1,6 @@
+fs = require 'fs'
 {print} = require 'util'
-{exec} = require 'child_process'
+{spawn} = require 'child_process'
 
 build = (callback) ->
 	coffee = spawn 'coffee', ['-c', '-o', '../server/static', 'source']
@@ -10,12 +11,5 @@ build = (callback) ->
 	coffee.on 'exit', (code) ->
 		callback?() if code is 0
 
-ls = (callback) ->
-	exec 'ls', callback
-
-
-task 'build', 'Build ../server/static from source/', ->
+task 'build', 'Build lib/ from src/', ->
 	build()
-
-task 'test', 'run tests', -> 
-	ls()
