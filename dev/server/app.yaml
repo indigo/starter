@@ -14,8 +14,8 @@ handlers:
 
 - url: /users.*
   script: users.app
-- url: /games/.*
-  script: games.app
+- url: /matches/.*
+  script: matches.app
 
 libraries:
 - name: jinja2

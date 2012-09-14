@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>Challenger</title>
+    <link type="text/css" rel="stylesheet" href="stylesheets/main.css" />
+    <script id="facebook-jssdk"></script>
+    <script src="vendor/jquery-1.7.1.js"></script>
+    <script src="vendor/underscore.js"></script>
+    <script src="vendor/backbone.js"></script>
+    <script src="vendor/backbone-localstorage.js"></script>
+  </head>
+
+  <body>
+
+    <p><b>Welcome User {{ user.key().id() }}!</b></p>
+
+  {% if myturn_games|length > 0 %}
+    <p><b>My Turn</b></p>
+
+    <table border="1">
+      <tr><th>Game ID</th><th>Nb of Players</th><th>View Game</th></tr>
+      {% for game in myturn_games %}
+      <tr>
+        <td>{{ game.key().id() }}</td>
+        <td>{{ game.users|count }}</td>
+        <td><button onClick="location.href='game?user_key={{ user.key() }}&amp;game_key={{ game.key() }}';">Play</button></td>
+      </tr>
+      {% endfor %}
+    </table><br>
+  {% endif %}
+
+  {% if waiting_games|length > 0 %}
+    <p><b>Their Turn</b></p>
+
+    <table border="1">
+      <tr><th>Game ID</th><th>Nb of Players</th><th>View Game</th></tr>
+      {% for game in waiting_games %}
+      <tr>
+        <td>{{ game.key().id() }}</td>
+        <td>{{ game.users|count }}</td>
+        <td><button onClick="location.href='game?user_key={{ user.key() }}&amp;game_key={{ game.key() }}';">View</button></td>
+      </tr>
+      {% endfor %}
+    </table><br>
+  {% endif %}
+
+    <p>
+      <button onClick="location.href='user?user_key={{ user.key() }}';">HOME</button>
+      <button onClick="location.href='game?user_key={{ user.key() }}';">NEXT GAME</button>
+    </p>
+
+  </body>
+</html>
