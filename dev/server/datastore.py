@@ -34,9 +34,21 @@ def to_dict(model):
   return json.dumps(output)
 
 
+class Application(db.Model):
+  name = db.StringProperty()
+  gamesCount = db.IntegerProperty()
+  usersCount = db.IntegerProperty()
+
+
+class Game(db.Model):
+  name = db.StringProperty()
+  minMatchUsers = db.IntegerProperty()
+  maxMatchUsers = db.IntegerProperty()
+  matchesCount = db.IntegerProperty()
+
+
 class User(db.Model):
   alias = db.StringProperty()
-  joinDate = db.DateProperty()
   loginDate = db.DateProperty()
 
   @property
@@ -49,8 +61,9 @@ class User(db.Model):
 
 
 class Match(db.Model):
-  typeId = db.IntegerProperty()
-  isOpen = db.BooleanProperty()
+  game = db.IntegerProperty()
+  state = db.IntegerProperty()
+  nbUsers = db.IntegerProperty()
   users = db.ListProperty(db.Key, default=None)
 
 

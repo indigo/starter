@@ -12,54 +12,54 @@ import datastore
 
 class UsersHandler(webapp2.RequestHandler):
 
-  # Return list of users
+  # Return list of entities
   def get(self):
     page = self.request.get('page', 0)
     pageSize = self.request.get('pageSize', 50)
+    entities = datastore.User.all().run(offset=page*pageSize, limit=pageSize)
+    output = {'entities': [datastore.to_dict(entity) for entity in entities]}
 
-    users = datastore.User.all().run(offset=page*pageSize, limit=pageSize)
-    output = {'users': [datastore.to_dict(user) for user in users]}
     self.response.out.write(output)
 
   # Create new user
   def post(self):
-    user = datastore.User()
-    user.alias = self.request.get('alias')
-    user.joinDate = datetime.date.today()
-    user.loginDate = datetime.date.today()
-    user.put()
-    self.response.out.write(datastore.to_dict(user))
+    entity = datastore.User()
+    entity.alias = self.request.get('alias')
+    entity.loginDate = datetime.date.today()
+    entity.put()
+
+    self.response.out.write(datastore.to_dict(entity))
 
 
 class UserHandler(webapp2.RequestHandler):
 
-  # Return user
-  def get(self, user_id):
-    user = datastore.User.get_by_id(int(user_id)) #db.get(db.Key.from_path('User', int(user_id)))
-    self.response.out.write(datastore.to_dict(user))
+  # Return entitiy
+  def get(self, entity_id):
+    entity = datastore.User.get_by_id(int(entity_id))
 
-  # Update user
-  def put(self, user_id):
-    user = db.get(db.Key.from_path('User', int(user_id)))
-    data = json.loads(self.request.body)
+    self.response.out.write(datastore.to_dict(entity))
 
-    for field in user.fields():
-      if data[field]:
-        datastore.User.__setattr__(user, field, data[field])
+  # Update entitiy
+  def put(self, entity_id):
+    entity = datastore.User.get_by_id(int(entity_id))
+    for entity in entity.fields():
+      if self.request.get(field):
+        datastore.User.__setattr__(entity, field, self.request.get(field))
+    entity.put()
 
-    user.put()
-    self.response.out.write(datastore.to_dict(user))
+    self.response.out.write(datastore.to_dict(entity))
 
 
 class UserMatchesHandler(webapp2.RequestHandler):
 
   # Return list of user's matches
-  def get(self, user_id):
-    user = db.get(db.Key.from_path('User', int(user_id)))
+  def get(self, entity_id):
+    entity = datastore.User.get_by_id(int(entity_id))
     if self.request.get('only_keys'):
-      output = {'matches': [key.id() for key in user.match_keys]}
+      output = {'entities': [key.id() for key in entity.match_keys]}
     else:
-      output = {'matches': [datastore.to_dict(match) for match in user.matches]}
+      output = {'entities': [datastore.to_dict(match) for match in entity.matches]}
+
     self.response.out.write(output)
 
 
