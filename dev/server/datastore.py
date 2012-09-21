@@ -1,14 +1,34 @@
 import datetime
-import time
 import json
-
 from google.appengine.ext import db
 
 
 
+class Games(db.Model):
+  name = db.StringProperty()
+  minUsers = db.IntegerProperty()
+  maxUsers = db.IntegerProperty()
+
+
+class Users(db.Model):
+  alias = db.StringProperty()
+  loginDate = db.DateProperty(auto_now=True)
+
+
+class Matches(db.Model):
+  state = db.IntegerProperty()
+  nbUsers = db.IntegerProperty()
+  users = db.ListProperty(db.Key, default=None)
+
+
+class Plays(db.Model):
+  user = db.ReferenceProperty(Users)
+  data = db.ListProperty(int)
+
+
 def to_dict(model):
   SIMPLE_TYPES = (int, long, float, bool, dict, basestring)
-  output = {}
+  output = {'key': str(model.key())}
 
   for key, prop in model.properties().iteritems():
     value = getattr(model, key)
@@ -21,9 +41,7 @@ def to_dict(model):
       else:
         output[key] = value
     elif isinstance(value, datetime.date):
-      ms = time.mktime(value.utctimetuple())
-      ms += getattr(value, 'microseconds', 0) / 1000
-      output[key] = int(ms)
+      output[key] = str(value)
     elif isinstance(value, db.GeoPt):
       output[key] = {'lat': value.lat, 'lon': value.lon}
     elif isinstance(value, db.Model):
@@ -32,42 +50,3 @@ def to_dict(model):
       raise ValueError('cannot encode ' + repr(prop))
 
   return json.dumps(output)
-
-
-class Application(db.Model):
-  name = db.StringProperty()
-  gamesCount = db.IntegerProperty()
-  usersCount = db.IntegerProperty()
-
-
-class Game(db.Model):
-  name = db.StringProperty()
-  minMatchUsers = db.IntegerProperty()
-  maxMatchUsers = db.IntegerProperty()
-  matchesCount = db.IntegerProperty()
-
-
-class User(db.Model):
-  alias = db.StringProperty()
-  loginDate = db.DateProperty()
-
-  @property
-  def matches(self):
-      return Game.gql("WHERE users = :1", self.key())
-
-  @property
-  def match_keys(self):
-      return Game.gql("WHERE users = :1", self.key()).run(keys_only=True)
-
-
-class Match(db.Model):
-  game = db.IntegerProperty()
-  state = db.IntegerProperty()
-  nbUsers = db.IntegerProperty()
-  users = db.ListProperty(db.Key, default=None)
-
-
-class Play(db.Model):
-  user = db.ReferenceProperty(User)
-  data = db.ListProperty(int)
-
