@@ -1,5 +1,6 @@
 import json
 import webapp2
+from google.appengine.ext import db
 
 import datastore
 
@@ -28,6 +29,8 @@ class RestHandler(webapp2.RequestHandler):
   def post(self):
     self.pre_process()
     self.entity = self.Entity()
+    if self.ancestor:
+      self.entity.parent = self.ancestor
     self.update_entity()
 
   # Update entitiy
@@ -64,9 +67,10 @@ class RestHandler(webapp2.RequestHandler):
   def update_entity(self):
     data = json.loads(self.request.body)
 
-    for field in self.entity.fields():
-      if field in data:
-        self.Entity.__setattr__(self.entity, field, data[field])
+    for key, value in data.items():
+      if isinstance(value, list) and len(value) > 0 and isinstance(value[0], basestring) and value[0][:4] == "key=":
+        value = db.Key(value[4:])
+      self.Entity.__setattr__(self.entity, key, value)
     self.entity.put()
 
     self.response.out.write(datastore.to_dict(self.entity))

@@ -48,5 +48,3 @@ def to_dict(model):
       output[key] = to_dict(value)
     else:
       raise ValueError('cannot encode ' + repr(prop))
-
-  return json.dumps(output)
