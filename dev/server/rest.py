@@ -10,27 +10,24 @@ class RestHandler(webapp2.RequestHandler):
   def get(self):
     self.pre_process()
 
-    # Return list of entities
-    if not self.entity:
+    # Return entitiy
+    if self.entity:
+      self.response.out.write(datastore.to_dict(self.entity))
 
+    # Return list of entities
+    else:
       if not self.ancestor:
         entities = self.Entity.all()
       else:
-        entities = self.Entity.gql("WHERE %s = :1" % self.ancestor_type, self.ancestor)
+        entities = eval("self.ancestor.%s" % self.entity_type)
 
       output = {'entities': [datastore.to_dict(entity) for entity in entities]}
       self.response.out.write(output)
 
-    # Return entitiy
-    else:
-      self.response.out.write(datastore.to_dict(self.entity))
-
   # Create new entitiy
   def post(self):
     self.pre_process()
-    self.entity = self.Entity()
-    if self.ancestor:
-      self.entity.parent = self.ancestor
+    self.entity = self.Entity(parent=self.ancestor)
     self.update_entity()
 
   # Update entitiy
@@ -41,7 +38,6 @@ class RestHandler(webapp2.RequestHandler):
 
   # Pre-process request
   def pre_process(self):
-    self.ancestor_type = None
     self.Ancestor = None
     self.ancestor = None
     path_list = self.request.path[1:].split('/')
@@ -50,9 +46,9 @@ class RestHandler(webapp2.RequestHandler):
     if len(path_list) & 1:
       self.Entity = eval("datastore.%s" % path_list[-1].capitalize())
       self.entity = None
+      self.entity_type = path_list[-1]
 
       if len(path_list) > 1:
-        self.ancestor_type = "datastore.%s" % path_list[-3]
         self.Ancestor = eval("datastore.%s" % path_list[-3].capitalize())
         self.ancestor = self.Ancestor.get(path_list[-2])
 
@@ -60,6 +56,8 @@ class RestHandler(webapp2.RequestHandler):
     elif len(path_list) > 0:
       self.Entity = eval("datastore.%s" % path_list[-2].capitalize())
       self.entity = self.Entity.get(path_list[-1])
+      self.entity_type = path_list[-2]
+
     else:
       raise Exception
 
@@ -69,8 +67,11 @@ class RestHandler(webapp2.RequestHandler):
 
     for key, value in data.items():
       if isinstance(value, list) and len(value) > 0 and isinstance(value[0], basestring) and value[0][:4] == "key=":
-        value = db.Key(value[4:])
-      self.Entity.__setattr__(self.entity, key, value)
+        self.Entity.__setattr__(self.entity, key, [db.Key(k[4:]) for k in value])
+      elif isinstance(value, basestring) and value[:4] == "key=":
+        self.Entity.__setattr__(self.entity, key, db.Key(value[4:]))
+      else:
+        self.Entity.__setattr__(self.entity, key, value)
     self.entity.put()
 
     self.response.out.write(datastore.to_dict(self.entity))

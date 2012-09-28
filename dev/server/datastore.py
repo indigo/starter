@@ -14,11 +14,20 @@ class Users(db.Model):
   alias = db.StringProperty()
   loginDate = db.DateProperty(auto_now=True)
 
+  @property
+  def matches(self):
+      return Matches.gql("WHERE users = :1", self.key())
+
 
 class Matches(db.Model):
-  state = db.IntegerProperty()
-  nbUsers = db.IntegerProperty()
   users = db.ListProperty(db.Key, default=None)
+  nbUsers = db.IntegerProperty()
+  state = db.IntegerProperty()
+  data = db.ListProperty(int)
+
+  @property
+  def plays(self):
+      return Plays.gql("WHERE ANCESTOR IS :1", self.key())
 
 
 class Plays(db.Model):
@@ -27,8 +36,11 @@ class Plays(db.Model):
 
 
 def to_dict(model):
+  if isinstance(model, db.Key):
+    return str(model)
+    
   SIMPLE_TYPES = (int, long, float, bool, dict, basestring)
-  output = {'key': str(model.key())}
+  output = {'key': str(model.key()), 'parent':str(model.parent_key())}
 
   for key, prop in model.properties().iteritems():
     value = getattr(model, key)
@@ -48,3 +60,5 @@ def to_dict(model):
       output[key] = to_dict(value)
     else:
       raise ValueError('cannot encode ' + repr(prop))
+
+  return output
