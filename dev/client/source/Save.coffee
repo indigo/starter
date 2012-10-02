@@ -25,9 +25,10 @@ jQuery ->
 
 		render: =>
 			$(@el).html """
-        		<span>#{@model.get 'part1'} #{@model.get 'part2'}!</span>
-        		<span class="view">view</span>"""
-      		@
+					<span>#{@model.get 'part1'} #{@model.get 'part2'}!</span>
+					<span class='view'>view</span>
+						"""
+			@
 
 	class MainView extends Backbone.View
 		el: $ 'body'
@@ -40,37 +41,3 @@ jQuery ->
 
 		render: ->
 			$(@el).append ('<ul><li>Welcome!  Fetching your information.... </li></ul>')
-
-
-class ListView extends Backbone.View
-    
-    el: $ 'body'
-    
-    initialize: ->
-      _.bindAll @
-      
-      @collection = new List
-      @collection.bind 'add', @appendItem
-      
-      @counter = 0
-      @render()
-    
-    render: ->
-      $(@el).append '<button>Add Item List</button>'
-      $(@el).append '<ul></ul>'
-    
-    addItem: ->
-      @counter++
-      item = new Item
-      item.set part2: "#{item.get 'part2'} #{@counter}"
-      @collection.add item
-    
-    appendItem: (item) ->
-      item_view = new ItemView model: item
-      $('ul').append item_view.render().el
-    
-    events: 'click button': 'addItem'
-
-
-
-	list_view = new MainView
