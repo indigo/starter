@@ -5,6 +5,7 @@ from google.appengine.ext import db
 import datastore
 
 
+
 class RestHandler(webapp2.RequestHandler):
 
   def get(self):
@@ -16,19 +17,24 @@ class RestHandler(webapp2.RequestHandler):
 
     # Return list of entities
     else:
+      page = int(self.request.get('page', 0))
+      pageSize = int(self.request.get('pageSize', 50))
+
       if not self.ancestor:
         entities = self.Entity.all()
       else:
         entities = eval("self.ancestor.%s" % self.entity_type)
 
-      output = {'entities': [datastore.to_dict(entity) for entity in entities]}
+      output = {'entities': [datastore.to_dict(entity) for entity in entities.run(offset=page*pageSize, limit=pageSize)]}
       self.response.out.write(output)
+
 
   # Create new entitiy
   def post(self):
     self.pre_process()
     self.entity = self.Entity(parent=self.ancestor)
     self.update_entity()
+
 
   # Update entitiy
   def put(self):
@@ -61,6 +67,7 @@ class RestHandler(webapp2.RequestHandler):
     else:
       raise Exception
 
+
   # Update entity
   def update_entity(self):
     data = json.loads(self.request.body)
@@ -79,5 +86,4 @@ class RestHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([ (r'/.*', RestHandler),
-                              ],
-                              debug=True)
+                              ], debug=True)

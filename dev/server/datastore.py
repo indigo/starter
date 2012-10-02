@@ -6,8 +6,6 @@ from google.appengine.ext import db
 
 class Games(db.Model):
   name = db.StringProperty()
-  minUsers = db.IntegerProperty()
-  maxUsers = db.IntegerProperty()
 
 
 class Users(db.Model):
@@ -16,18 +14,21 @@ class Users(db.Model):
 
   @property
   def matches(self):
-      return Matches.gql("WHERE users = :1", self.key())
+    return Matches.gql("WHERE users = :1", self.key())
+
+  @property
+  def nextMatch(self):
+    return Matches.gql("WHERE state = 1 AND users = :1", self.key()).get()
 
 
 class Matches(db.Model):
   users = db.ListProperty(db.Key, default=None)
-  nbUsers = db.IntegerProperty()
   state = db.IntegerProperty()
   data = db.ListProperty(int)
 
   @property
   def plays(self):
-      return Plays.gql("WHERE ANCESTOR IS :1", self.key())
+    return Plays.gql("WHERE ANCESTOR IS :1", self.key())
 
 
 class Plays(db.Model):
@@ -36,9 +37,9 @@ class Plays(db.Model):
 
 
 def to_dict(model):
-  if isinstance(model, db.Key):
+  if not isinstance(model, db.Model):
     return str(model)
-    
+
   SIMPLE_TYPES = (int, long, float, bool, dict, basestring)
   output = {'key': str(model.key()), 'parent':str(model.parent_key())}
 

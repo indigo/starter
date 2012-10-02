@@ -1,67 +1,42 @@
-import json
 import webapp2
+from google.appengine.ext import db
 
 import datastore
-
-
-class UsersHandler(webapp2.RequestHandler):
-
-  # Return list of entities
-  def get(self):
-    page = self.request.get('page', 0)
-    pageSize = self.request.get('pageSize', 50)
-    entities = datastore.User.all().run(offset=page*pageSize, limit=pageSize)
-    output = {'entities': [datastore.to_dict(entity) for entity in entities]}
-
-    self.response.out.write(output)
-
-  # Create new entitiy
-  def post(self):
-    data = json.loads(self.request.body)
-
-    entity = datastore.User()
-    for field in entity.fields():
-      if field in data:
-        datastore.Game.__setattr__(entity, field, data[field])
-    entity.put()
-
-    self.response.out.write(datastore.to_dict(entity))
-
-
-class UserHandler(webapp2.RequestHandler):
-
-  # Return entitiy
-  def get(self, entity_key):
-    entity = datastore.User.get(entity_key)
-
-    self.response.out.write(datastore.to_dict(entity))
-
-  # Update entitiy
-  def put(self, entity_key):
-    data = json.loads(self.request.body)
-
-    entity = datastore.User.get(entity_key)
-    for field in entity.fields():
-      if field in data:
-        datastore.Game.__setattr__(entity, field, data[field])
-    entity.put()
-
-    self.response.out.write(datastore.to_dict(entity))
-
-
-class UserMatchesHandler(webapp2.RequestHandler):
-
-  # Return list of user's matches
-  def get(self, entity_key):
-    entity = datastore.User.get(entity_key)
-    output = {'entities': [datastore.to_dict(match) for match in entity.matches]}
-
-    self.response.out.write(output)
+from rest import RestHandler
 
 
 
-app = webapp2.WSGIApplication([ (r'/users/(.*)/matches',  UserMatchesHandler),
-                                (r'/users/(.*)',          UserHandler),
-                                (r'/users',               UsersHandler),
-                              ],
-                              debug=True)
+class UserMatchHandler(RestHandler):
+
+  def get(self, user_key):
+    RestHandler.get(self)
+
+  # Join/Create new match
+  def post(self, user_key):
+    user = db.Key(user_key)
+
+    # Get next active game
+    match = datastore.Matches.gql("WHERE state = 1 AND users = :1", user).get()
+
+    # Join open game
+    if not match:
+      for m in datastore.Matches.gql("WHERE state = 0"):
+        if user not in m.users:
+          match = m
+          match.state = 1
+          match.users.insert(0, user)
+          match.put()
+          break
+
+    # Create new game
+    if not match:
+      match = datastore.Matches(state=0, users=[user])
+      match.put()
+
+    self.response.out.write(datastore.to_dict(match))
+
+
+
+app = webapp2.WSGIApplication([ (r'/users/(.*)/matches', UserMatchHandler),
+                                (r'/.*', RestHandler),
+                              ], debug=True)

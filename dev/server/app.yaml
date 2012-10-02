@@ -11,7 +11,12 @@ handlers:
   static_dir: vendor
 - url: /static
   static_dir: static
+- url: /favicon\.ico
+  static_files: static/images/favicon.ico
+  upload: static/images/favicon\.ico
 
+- url: /users.*
+  script: users.app
 - url: /.*
   script: rest.app
 
