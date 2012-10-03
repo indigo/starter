@@ -5,7 +5,9 @@
     var users, _ref;
     this.app = (_ref = window.app) != null ? _ref : {};
     users = new this.app.Users();
-    return users.fetch();
+    users.fetch();
+    console.log(users.toJSON());
+    return this.app.users = users;
   });
 
 }).call(this);

@@ -40,6 +40,14 @@
       return User.__super__.constructor.apply(this, arguments);
     }
 
+    User.prototype['alias'] = 'Indigo';
+
+    User.prototype['loginDate'] = '2012-10-02';
+
+    User.prototype['parent'] = 'None';
+
+    User.prototype['key'] = 'ahNkZXZ-Y2hhbGxlbmdlci1kZXYxcgsLEgVVc2VycxgBDA';
+
     return User;
 
   })(Backbone.Model);
@@ -54,7 +62,7 @@
 
     Users.prototype.model = User;
 
-    Users.prototype.url = "http://challenger-dev1.appspot.com/users";
+    Users.prototype.url = "/users";
 
     return Users;
 
