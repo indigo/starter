@@ -18,7 +18,32 @@ class Users(db.Model):
 
   @property
   def nextMatch(self):
-    return Matches.gql("WHERE state = 1 AND users = :1", self.key()).get()
+    match = None
+
+    # Get next active game
+    matches = Matches.gql("WHERE state = 1 AND users = :1", self.key())
+    for m in matches:
+      if m.users[0] == self:
+        match = m
+        break
+
+    # Join open game
+    if not match:
+      matches = Matches.gql("WHERE state = 0")
+      for m in matches:
+        if self.key() not in m.users:
+          match = m
+          match.state = 1
+          match.users.insert(0, self.key())
+          match.put()
+          break
+
+    # Create new game
+    if not match:
+      match = Matches(state=0, users=[self.key()])
+      match.put()
+
+    return to_dict(match)
 
 
 class Matches(db.Model):

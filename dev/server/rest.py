@@ -13,7 +13,11 @@ class RestHandler(webapp2.RequestHandler):
 
     # Return entitiy
     if self.entity:
-      self.response.out.write(datastore.to_dict(self.entity))
+      attr = self.request.get('property')
+      if attr:
+        self.response.out.write(eval("self.entity.%s" % attr))
+      else:
+        self.response.out.write(datastore.to_dict(self.entity))
 
     # Return list of entities
     else:
@@ -25,7 +29,7 @@ class RestHandler(webapp2.RequestHandler):
       else:
         entities = eval("self.ancestor.%s" % self.entity_type)
 
-      output = {'entities': [datastore.to_dict(entity) for entity in entities.run(offset=page*pageSize, limit=pageSize)]}
+      output = [datastore.to_dict(entity) for entity in entities.run(offset=page*pageSize, limit=pageSize)]
       self.response.out.write(output)
 
 
