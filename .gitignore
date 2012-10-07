@@ -1,4 +1,3 @@
-.gitignore
 dev/server/static/
 
 #################
@@ -165,12 +164,5 @@ pip-log.txt
 # Mac crap
 .DS_Store
 
-*.js
-
-*.js
-
-dev/server/static/ModelsAndCollections.js
-
 dev/server/vendor/backbone.js
 
-dev/server/static/Main.js
