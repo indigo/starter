@@ -166,3 +166,11 @@ pip-log.txt
 .DS_Store
 
 *.js
+
+*.js
+
+dev/server/static/ModelsAndCollections.js
+
+dev/server/vendor/backbone.js
+
+dev/server/static/Main.js
