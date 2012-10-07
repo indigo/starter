@@ -30,7 +30,7 @@ class RestHandler(webapp2.RequestHandler):
         entities = eval("self.ancestor.%s" % self.entity_type)
 
       output = [datastore.to_dict(entity) for entity in entities.run(offset=page*pageSize, limit=pageSize)]
-      self.response.out.write(output)
+      self.response.out.write(json.dumps(output))
 
 
   # Create new entitiy
