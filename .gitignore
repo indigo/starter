@@ -1,3 +1,6 @@
+.gitignore
+dev/server/static/
+
 #################
 ## Eclipse
 #################
