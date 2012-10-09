@@ -1,7 +1,7 @@
 jQuery ->
 	@app = window.app ? {}
-	users = new @app.Users()
-	users.bind 'add', -> console.log 'test'
-	users.fetch()
-	console.log users
-	@app.users = users
+	@app.Users = new @app.Users()
+	usersView = new @app.UsersView
+		collection: @app.Users
+		el: $('#content')	
+	console.log @app.Users
