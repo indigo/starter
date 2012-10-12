@@ -15,7 +15,7 @@
       return GameView.__super__.constructor.apply(this, arguments);
     }
 
-    GameView.prototype.tagname = 'li';
+    GameView.prototype.tagName = 'li';
 
     return GameView;
 
@@ -29,7 +29,7 @@
       return UserView.__super__.constructor.apply(this, arguments);
     }
 
-    UserView.prototype.tagname = 'li';
+    UserView.prototype.tagName = 'span';
 
     UserView.prototype.render = function() {
       var content;
@@ -67,7 +67,8 @@
       view = new UserView({
         model: user
       });
-      return this.$('#user-list').append(view.render());
+      this.$('#user-list').append(view.render());
+      return this.$('#user-list').append("<span> - </span>");
     };
 
     UsersView.prototype.addAll = function() {
