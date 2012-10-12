@@ -2,10 +2,10 @@
 @app = window.app ? {}
 
 class GameView extends Backbone.View
-	tagname: 'li'
+	tagName: 'li'
 
 class UserView extends Backbone.View
-	tagname: 'li'	
+	tagName: 'span'
 	render: ->
 		content = @model.get('alias')
 		$(@el).html(content)
@@ -22,6 +22,7 @@ class UsersView extends Backbone.View
 		console.log user
 		view = new UserView(model: user)
 		@$('#user-list').append(view.render())
+		@$('#user-list').append("<span> - </span>")		
 	addAll: =>
 		@collection.each @addOne
 

@@ -3,5 +3,5 @@ jQuery ->
 	@app.Users = new @app.Users()
 	usersView = new @app.UsersView
 		collection: @app.Users
-		el: $('#content')	
+		el: $('#mainapp')	
 	console.log @app.Users
